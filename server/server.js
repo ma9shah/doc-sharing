@@ -4,11 +4,67 @@ let io = require('socket.io')(3003, {
         methods: ["GET", "POST"],
     },
 })
+// const MongoClient = require('mongodb').MongoClient;
+const connection = require('./connection');
 
 io.on("connection", socket => {
-    socket.on('send-changes',
-        delta => {
+    // const uri = "mongodb+srv://sana:ucirvine@cluster0.qaroa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    // const client = new MongoClient(uri);
+    connection.main();
+    var user, group, file;
+    socket.on('getUserInfo',
+        username => {
+            console.log('got username', username)
+            connection.listDatabases(username).then(group=>{
+                this.group = group;
+                connection.getGroup(group).then(file=>{
+                    this.file = file;
+                    connection.getFile(file).then(text=>{
+                        console.log("from server", text);
+                socket.emit('data', text);
+            }).catch(err=>{
+                console.log(err);
+            });
+                })
+            }).catch(err=>{
+                console.log(err);
+            });
+            // console.log("server ", text);
+        })
+    socket.on('updateChanges', (username,data)=>{
+        console.log('will now update ', data, user, group, file)
+        connection.listDatabases(username).then(group=>{
+            this.group = group;
+            connection.getGroup(group).then(file=>{
+                this.file = file;
+                connection.updateFile(file, data).then(text=>{
+                    console.log("from server", text);
+            // socket.emit('data', text);
+        }).catch(err=>{
+            console.log(err);
+        });
+            })
+        }).catch(err=>{
+            console.log(err);
+        });
+    }); 
+    socket.on('send-changes', delta => {
             socket.broadcast.emit('accept-new-changes', delta)
+            // console.log('will now update ', data, user, group, file)
+        // connection.listDatabases(username).then(group=>{
+        //     this.group = group;
+        //     connection.getGroup(group).then(file=>{
+        //         this.file = file;
+        //         connection.updateFile(file, data).then(text=>{
+        //             console.log("from server", text);
+        //     // socket.emit('data', text);
+        // }).catch(err=>{
+        //     console.log(err);
+        // });
+        //     })       
+        // }).catch(err=>{
+        //     console.log(err);
+        // });
             console.log(delta.ops)
         })
     console.log("Connection established")

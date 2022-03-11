@@ -16,7 +16,9 @@ export default function LoginPage() {
         username: '',
         password: ''
     });
-    const [isContainerActive, setIsContainerActive] = React.useState(false);
+    const [isContainerActive, setIsContainerActive] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    
     const activateSignIn = () => {
         setIsContainerActive(false);
     }
@@ -60,20 +62,22 @@ export default function LoginPage() {
         e.preventDefault();
         console.log("submit kiya");
         setSubmitted(true);
-        console.log(inputs);
-        console.log(username);
-        console.log(password);
         socket.emit('verifyUser', username, password);
         console.log("his")
         socket.on('LoggedIn', (login) =>{
             setCorrectCredentials(login);
             console.log("submitted" + correctCredentials)
             if(login){
+                setLoading(true);
+                console.log(isLoading + " is Loading??");
                 console.log(user);
                 console.log("^ before dispatch");
-                dispatch(allActions.userActions.setUser(user));
-                navigate("/dashboard");
-                // navigate('/texteditor');
+                setTimeout(() => {
+                    setLoading(false);
+                    console.log(isLoading + " is Loading??");
+                    dispatch(allActions.userActions.setUser(user));
+                    navigate("/dashboard");
+                }, 1500);
             }
         });
         console.log("whastup");
@@ -82,7 +86,6 @@ export default function LoginPage() {
     function handleChange(e) {
         const { name, value } = e.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
-        console.log(inputs)
     }
 
     function handleChangeEmail(e) {
@@ -105,9 +108,9 @@ export default function LoginPage() {
 
     return (
         <Fragment>
-            <div  className="forBody">
-        <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
-            <div className="containerForLogin   " id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
+        <div className={`login-container${isLoading ? " low-opacity" : ""}`}>
+            <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
+            <div id="container" className={`containerForLogin${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
                     <form>
                         <h1>Create Account</h1>
@@ -141,7 +144,13 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
-            </div>  
+        </div>
+        <span className={`spinner${isLoading ? "" : " spinner-inactive"}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
       </Fragment>
     );
 }

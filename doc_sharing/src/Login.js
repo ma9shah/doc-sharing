@@ -59,9 +59,6 @@ export default function LoginPage() {
         e.preventDefault();
         console.log("submit kiya");
         setSubmitted(true);
-        console.log(inputs);
-        console.log(username);
-        console.log(password);
         socket.emit('verifyUser', username, password);
         console.log("his")
         socket.on('LoggedIn', (login) =>{
@@ -80,13 +77,12 @@ export default function LoginPage() {
     function handleChange(e) {
         const { name, value } = e.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
-        console.log(inputs)
     }
 
     return (
         <Fragment>
         <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
-            <div className="container" id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
+            <div id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
                     <form action="#">
                         <h1>Create Account</h1>

@@ -101,10 +101,11 @@ export default function LoginPage() {
 
     return (
         <Fragment>
+            <div  className="forBody">
         <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
-            <div className="container" id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
+            <div className="containerForLogin" id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
-                    <form action="#">
+                    <form>
                         <h1>Create Account</h1>
                         <input type="text" name = "username" value={username} onChange={handleChange} placeholder="username" />
                         <input type="email" name = "email" value={email} onChange={handleChangeEmail} placeholder="Email" />
@@ -125,17 +126,18 @@ export default function LoginPage() {
                     <div className="overlay">
                         <div className="overlay-panel overlay-left">
                             <h1>Welcome Back!</h1>
-                            <p>To keep connected with us please login with your personal info</p>
+                            <p className="forP">To keep connected with us please login with your personal info</p>
                             <button className="ghost" id="signIn" onClick={activateSignIn}>Sign In</button>
                         </div>
                         <div className="overlay-panel overlay-right">
                             <h1>Hello, Friend!</h1>
-                            <p>Enter your personal details and start journey with us</p>
+                            <p className="forP">Enter your personal details and start journey with us</p>
                             <button className="ghost" id="signUp" onClick={activateSignUp}>Sign Up</button>
                         </div>
                     </div>
                 </div>
             </div>
+            </div>  
       </Fragment>
     );
 }

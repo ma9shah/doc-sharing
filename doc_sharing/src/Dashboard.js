@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 // react plugin used to create charts
 // import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
@@ -44,11 +44,18 @@ export default function Dashboard() {
         }
       }, [])
 
-      function addNewGroup(){
+      function addNewGroup(e){
+          e.preventDefault();
+          dispatch(allActions.userActions.setUser(currentUser));
           socket.emit('addNewGroup', groupPasscode, currentUser.user.name);
           socket.on('added', added=>{
               console.log(added);
           });
+          socket.emit('getGroupList', currentUser.user.name);
+          socket.on("groups", (groupsList)=>{
+            console.log(groupsList);
+            setGroups(groupsList);
+        });
       }
 
       function handleChange(e){
@@ -57,66 +64,36 @@ export default function Dashboard() {
       }
 
   return (
-    <>
-      <div className="content">
-        <Row>
-        {groups!=null && groups.map(group=>
-                      <Group groupId = {group}></Group>
-                  )}
-          <Col lg="3" md="6" sm="6">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-simple-add text-success" />
-                    </div>
-                  </Col>
-                  <Col md="20" xs="7">
-                    <div className="numbers">
-                      <p className="card-category">New Task</p>
-                      <CardTitle tag="p">______</CardTitle>
-                      <input type="text" name = "groupPasscode" value={groupPasscode} onChange={handleChange} placeholder="passcode" />
-                      <button onClick={addNewGroup}>Click to add</button>
-                      <p />
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats text-center">
-                  <a type="button" className="far fa-calendar"> Create Task</a>
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="12">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Productivity Graph</CardTitle>
-                <p className="card-category">24 Hours performance</p>
-              </CardHeader>
-              <CardBody>
-                {/* <Line
-                  data={dashboard24HoursPerformanceChart.data}
-                  options={dashboard24HoursPerformanceChart.options}
-                  width={400}
-                  height={100}
-                /> */}
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    </>
+    <Fragment>
+        {groups!=null &&
+        <table className="table table-hover mt-5 text-center">
+            <thead className="thead-light">
+                <tr>
+                <th className="text-left" scope="col">Group</th>
+                <th className="text-left" scope="col">Description</th>
+                <th scope="col">Open</th>
+                </tr>
+            </thead>
+            <tbody>
+                { /*<tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                </tr> */}
+                {groups!=null && groups.map(group => (
+                    <Group groupId={group}></Group>
+                    
+                ))}
+            </tbody>
+        </table>
+}
+
+        {/* <h1 className="text-center mt-5">Join new groups?</h1>
+        <form className="d-flex mt-5">
+            <input type="text" className="form-control" value={groupPasscode} onChange={handleChange}></input>
+            <button className="btn btn-success" onClick={addNewGroup}>Add</button>
+        </form> */}
+    </Fragment>
   );
 }

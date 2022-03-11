@@ -96,6 +96,10 @@ export default function LoginPage() {
         socket.emit('createAccount', username, email, password);
         socket.on('created', (created)=>{
             console.log("confirmation that ", created);
+            if(created){
+                dispatch(allActions.userActions.setUser(user));
+                navigate('/dashboard');
+            }
         });
     }
 

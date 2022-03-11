@@ -50,42 +50,11 @@ export default function Group(props) {
 
   return (
     <>
-      <div className="content">
-      <Col>
-            <Card className="card-stats">
-              <CardBody>
-        <Row>
-                  <Col md="4" xs="5">
-                    <div className="icon-big">
-                      <i className="nc-icon nc-circle-10" />
-                      &nbsp;
-                      <i className="nc-icon nc-circle-10" />
-                      <br></br>
-                      <i className="nc-icon nc-circle-10" />
-                      &nbsp;
-                      <i className="nc-icon nc-circle-10" />
-                    </div>
-                    
-                  </Col>
-                  <Col md="8" xs="7">
-                    <div className="numbers">
-                        <p>{props.groupId}</p>
-                    <CardTitle tag="p">{groupData.name}</CardTitle>
-                      <p className="card-category">{groupData.description}</p>
-                      <p />
-                    </div>
-                  </Col>
-                </Row>
-                </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats text-center">
-                    <button onClick={handleNavigate}> Open </button>
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-      </div>
-    </>
+          <tr>
+          <td className="text-left" scope="col">{groupData.name}</td>
+                        <td className="text-left" scope="col">{groupData.description}</td>
+                        <td><button scope="col" className="btn btn-danger" onClick={handleNavigate}>Open</button></td>
+                    </tr>
+            </>
   );
 }

@@ -86,11 +86,28 @@ module.exports = {
         return result.acknowledged;
     },
 
-    // addNewGroup: async function(passcode, username){
-    //     const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(2);
-    //     const c = await check1.toArray();
-    //     const userid = c[0].id
-    // },
+    addNewGroup: async function(passcode, username){
+        const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(1);
+        const c = await check1.toArray();
+        const userid = c[0]._id;
+        const group = await this.client.db("Keystone").collection("group").find({passcode: passcode}).limit(1);
+        const g = await group.toArray();
+        const members = g[0].members;
+        for(var i=0;i<members.length;i++){
+            if(members[i] == userid) return;
+        }
+        const result = await this.client.db("Keystone").collection("group").updateOne(
+            { "passcode": passcode },
+            {
+                $push: {
+                    members: {
+                    $each: [new ObjectId(userid)],
+                    $position: -1
+                }
+            }
+        });
+        return result;  
+    },
   
   
     createListing: async function (client){

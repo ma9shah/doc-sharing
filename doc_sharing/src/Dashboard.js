@@ -39,13 +39,6 @@ export default function Dashboard() {
             console.log(groupsList);
             setGroups(groupsList);
         });
-        // dispatch(allActions.userActions.setUser(user))
-        // setSubmitted(false);
-        // setUsername("sana");
-        // socket_instance.on('data', data=>{
-        //   setText(data);
-        //   console.log('cient ', data);
-        // })    
     
         return () => {
         }
@@ -67,7 +60,7 @@ export default function Dashboard() {
     <>
       <div className="content">
         <Row>
-        {groups.map(group=>
+        {groups!=null && groups.map(group=>
                       <Group groupId = {group}></Group>
                   )}
           <Col lg="3" md="6" sm="6">

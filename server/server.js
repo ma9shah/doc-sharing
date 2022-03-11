@@ -65,11 +65,11 @@ io.on("connection", socket => {
     });
 
     socket.on('addNewGroup', (passcode, username)=>{
-        // connection.addNewGroup(passcode, username).then(added=>{
-        //     socket.emit('added', added);
-        // }).catch(err=>{
-        //     console.log(err);
-        // });
+        connection.addNewGroup(passcode, username).then(added=>{
+            socket.emit('added', added);
+        }).catch(err=>{
+            console.log(err);
+        });
     })
 
     socket.on('send-changes', delta => {

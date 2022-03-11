@@ -103,7 +103,7 @@ export default function LoginPage() {
         <Fragment>
             <div  className="forBody">
         <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
-            <div className="containerForLogin" id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
+            <div className="containerForLogin   " id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
                     <form>
                         <h1>Create Account</h1>

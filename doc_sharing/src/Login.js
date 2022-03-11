@@ -16,7 +16,9 @@ export default function LoginPage() {
         username: '',
         password: ''
     });
-    const [isContainerActive, setIsContainerActive] = React.useState(false);
+    const [isContainerActive, setIsContainerActive] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    
     const activateSignIn = () => {
         setIsContainerActive(false);
     }
@@ -65,10 +67,16 @@ export default function LoginPage() {
             setCorrectCredentials(login);
             console.log("submitted" + correctCredentials)
             if(login){
+                setLoading(true);
+                console.log(isLoading + " is Loading??");
                 console.log(user);
                 console.log("^ before dispatch");
-                dispatch(allActions.userActions.setUser(user));
-                navigate("/dashboard");
+                setTimeout(() => {
+                    setLoading(false);
+                    console.log(isLoading + " is Loading??");
+                    dispatch(allActions.userActions.setUser(user));
+                    navigate("/dashboard");
+                }, 1500);
             }
         });
         console.log("whastup");
@@ -81,7 +89,8 @@ export default function LoginPage() {
 
     return (
         <Fragment>
-        <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
+        <div className={`login-container${isLoading ? " low-opacity" : ""}`}>
+            <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
             <div id="container" className={`container${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
                     <form action="#">
@@ -116,6 +125,13 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
+        </div>
+        <span className={`spinner${isLoading ? "" : " spinner-inactive"}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
       </Fragment>
 
 

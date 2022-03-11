@@ -4,16 +4,6 @@
 	box-sizing: border-box;
 }
 
-.forBody{
-    background: #f8f3fd;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Oxygen';
-	height: 100vh;
-	margin: -20px 0 50px;
-}
 
 h1 {
 	font-weight: bold;
@@ -338,6 +328,14 @@ input {
 
 .login-container {
 	opacity: 1;
+	background: #f8f3fd;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: 'Oxygen';
+	height: 100vh;
+	margin: -20px 0 50px;
 }
 
 .low-opacity {

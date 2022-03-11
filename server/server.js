@@ -57,12 +57,12 @@ io.on("connection", socket => {
 
     socket.on('createAccount',(username, email, password) =>{
         connection.createAccount(username, email, password).then(created=>{
-            console.log(created, "created");
             socket.emit("created", created);
         }).catch(err=>{
             console.log(err);
         })
     });
+
 
     socket.on('addNewGroup', (passcode, username)=>{
         connection.addNewGroup(passcode, username).then(added=>{

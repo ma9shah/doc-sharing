@@ -24,27 +24,39 @@ module.exports = {
     },
     // main().catch(console.error);
 
+    login: async function(username, pass){ 
+        console.log("user", username );
+        const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(1);
+        const c = await check1.toArray();
+        if(c[0]==null) return false;
+        console.log(JSON.stringify(c));
+        const password = c[0].password;
+        return password == pass;
+        // return this.getGroup(group);
+    },
+
     listDatabases: async function(username){ 
         console.log("user", username );
         const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(1);
         const c = await check1.toArray();
         console.log(JSON.stringify(c));
-        const group = c[0].group[0];
+        const group = c[0].group;
         return group;
         // return this.getGroup(group);
     },
 
     getGroup: async function (group){
-        const findGroup = await this.client.db("Keystone").collection("group").find({_id: new ObjectId(group)}).limit(2);
+        const findGroup = await this.client.db("Keystone").collection("group").find({_id: new ObjectId(group)}).limit(1);
         const file = await findGroup.toArray();
         const fileID = file[0].file[0];
         console.log(JSON.stringify(fileID));
-        return fileID;
+        // return fileID;
+        return file;
         // return this.getFile(fileID);
     },
   
     getFile: async function (fileID){
-        const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(2);
+        const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(1);
         const file = await findFile.toArray();
         const text = file[0].data;
         console.log(JSON.stringify(text));
@@ -61,7 +73,7 @@ module.exports = {
         const result = await this.client.db("Keystone").collection("file")
         
                                 .updateOne({ _id: new ObjectId(fileID) }, { $set: {data:updatedData} });
-                                const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(2);
+                                const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(1);
         const file = await findFile.toArray();
         const text = file[0].data;
         console.log('now updated',JSON.stringify(text));

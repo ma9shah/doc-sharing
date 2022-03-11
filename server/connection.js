@@ -60,30 +60,37 @@ module.exports = {
         const file = await findFile.toArray();
         const text = file[0].data;
         console.log(JSON.stringify(text));
-        return text;
+        // return text;
+        return file;
     },
 
-    updateFile: async function (fileID, updatedData){
-        // const findFile = await this.client.db("Collab").collection("file").find({_id: new ObjectId(fileID)}).limit(2);
-        // const file = await findFile.toArray();
-        // const text = file[0].data;
-        // console.log(JSON.stringify(text));
-        // return text;
-        
+    updateFile: async function (fileID, updatedData){        
         const result = await this.client.db("Keystone").collection("file")
         
                                 .updateOne({ _id: new ObjectId(fileID) }, { $set: {data:updatedData} });
-                                const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(1);
+        const findFile = await this.client.db("Keystone").collection("file").find({_id: new ObjectId(fileID)}).limit(1);
         const file = await findFile.toArray();
         const text = file[0].data;
-        console.log('now updated',JSON.stringify(text));
-        
-            // console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-        
-            // console.log(`${result.modifiedCount} document(s) was/were updated.`);
-        
+        console.log('now updated',JSON.stringify(text));        
     },
 
+    createAccount: async function(username, email, password){
+        const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(2);
+        const c = await check1.toArray();
+        if(c.length>=1) return false;
+        const result = await this.client.db("Keystone").collection("user").insertOne({
+            username: username,
+            email: email,
+            password: password
+        });
+        return result.acknowledged;
+    },
+
+    // addNewGroup: async function(passcode, username){
+    //     const check1 = await this.client.db("Keystone").collection("user").find({username: username}).limit(2);
+    //     const c = await check1.toArray();
+    //     const userid = c[0].id
+    // },
   
   
     createListing: async function (client){

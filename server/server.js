@@ -4,12 +4,9 @@ let io = require('socket.io')(3003, {
         methods: ["GET", "POST"],
     },
 })
-// const MongoClient = require('mongodb').MongoClient;
 const connection = require('./connection');
 
 io.on("connection", socket => {
-    // const uri = "mongodb+srv://sana:ucirvine@cluster0.qaroa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    // const client = new MongoClient(uri);
     connection.main();
 
     socket.on('verifyUser', (username,passowrd)=>{
@@ -19,12 +16,6 @@ io.on("connection", socket => {
             console.log(login);
             socket.emit('LoggedIn', login);
             console.log("emitted");
-            // this.group = group;
-            // connection.getGroup(group).then(file=>{
-            //     this.file = file;
-            //     connection.updateFile(file, data).then(text=>{
-            //         console.log("from server", text);
-            // socket.emit('data', text);
         }).catch(err=>{
             console.log(err);
         });
@@ -47,61 +38,44 @@ io.on("connection", socket => {
         })
     });
 
-    var user, group, file;
-    socket.on('getUserInfo',
-        username => {
-            console.log('got username', username)
-            connection.listDatabases(username).then(group=>{
-                this.group = group;
-                connection.getGroup(group[0]).then(file=>{
-                    this.file = file;
-                    connection.getFile(file[0].file[0]).then(text=>{
-                        console.log("from server", text);
-                socket.emit('data', text);
-            }).catch(err=>{
-                console.log(err);
-            });
-                })
-            }).catch(err=>{
-                console.log(err);
-            });
-            // console.log("server ", text);
+    socket.on('getFileData', fileId =>{
+        connection.getFile(fileId).then(text=>{
+            console.log("text from server ", text);
+            socket.emit('data', text);
+        }).catch(err=>{
+            console.log(err);
         })
-    socket.on('updateChanges', (username,data)=>{
-        console.log('will now update ', data, user, group, file)
-        connection.listDatabases(username).then(group=>{
-            this.group = group;
-            connection.getGroup(group).then(file=>{
-                this.file = file;
-                connection.updateFile(file, data).then(text=>{
-                    console.log("from server", text);
-            // socket.emit('data', text);
+    });
+
+    socket.on('updateFile', (fileId, updatedText) =>{
+        connection.updateFile(fileId, updatedText).then(text=>{
+            console.log("text updated to ", text);
         }).catch(err=>{
             console.log(err);
-        });
-            })
+        })
+    });
+
+    socket.on('createAccount',(username, email, password) =>{
+        connection.createAccount(username, email, password).then(created=>{
+            console.log(created, "created");
+            socket.emit("created", created);
         }).catch(err=>{
             console.log(err);
-        });
-    }); 
+        })
+    });
+
+    socket.on('addNewGroup', (passcode, username)=>{
+        // connection.addNewGroup(passcode, username).then(added=>{
+        //     socket.emit('added', added);
+        // }).catch(err=>{
+        //     console.log(err);
+        // });
+    })
+
     socket.on('send-changes', delta => {
             socket.broadcast.emit('accept-new-changes', delta)
-            // console.log('will now update ', data, user, group, file)
-        // connection.listDatabases(username).then(group=>{
-        //     this.group = group;
-        //     connection.getGroup(group).then(file=>{
-        //         this.file = file;
-        //         connection.updateFile(file, data).then(text=>{
-        //             console.log("from server", text);
-        //     // socket.emit('data', text);
-        // }).catch(err=>{
-        //     console.log(err);
-        // });
-        //     })       
-        // }).catch(err=>{
-        //     console.log(err);
-        // });
             console.log(delta.ops)
         })
+        
     console.log("Connection established")
 })

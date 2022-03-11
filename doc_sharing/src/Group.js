@@ -42,6 +42,12 @@ export default function Group(props) {
         }
       }, [])
 
+    //   onClick={()=>{navigate('/texteditor',{state:{id:groupData.file}})}
+    function handleNavigate(e) {
+        e.preventDefault();
+        navigate("/texteditor", {state:{id:groupData.file}});
+    }
+
   return (
     <>
       <div className="content">
@@ -74,8 +80,7 @@ export default function Group(props) {
               <CardFooter>
                 <hr />
                 <div className="stats text-center">
-                    {/* <button onClick={()=>{navigate(/texteditor)}}> Open </button> */}
-                  <a type="button" href="http://localhost:3000/">Open</a>
+                    <button onClick={handleNavigate}> Open </button>
                 </div>
               </CardFooter>
             </Card>

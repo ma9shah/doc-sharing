@@ -27,6 +27,7 @@ export default function LoginPage() {
     const [submitted, setSubmitted] = useState(false);
     const [correctCredentials, setCorrectCredentials] = useState(false);
     const { username, password } = inputs;
+    const [email, setEmail]= useState();
     const currentUser = useSelector(state => state.currentUser)
     const dispatch = useDispatch()
     const user = {name: username}
@@ -72,6 +73,7 @@ export default function LoginPage() {
                 console.log("^ before dispatch");
                 dispatch(allActions.userActions.setUser(user));
                 navigate("/dashboard");
+                // navigate('/texteditor');
             }
         });
         console.log("whastup");
@@ -83,6 +85,20 @@ export default function LoginPage() {
         console.log(inputs)
     }
 
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+        console.log(email)
+    }
+
+    function handleSignUp(e){
+        e.preventDefault();
+        console.log(username, email, password);
+        socket.emit('createAccount', username, email, password);
+        socket.on('created', (created)=>{
+            console.log("confirmation that ", created);
+        });
+    }
+
     return (
         <Fragment>
         <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
@@ -90,10 +106,10 @@ export default function LoginPage() {
                 <div className="form-container sign-up-container">
                     <form action="#">
                         <h1>Create Account</h1>
-                        <input type="text" placeholder="Name" />
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
-                        <button>Sign Up</button>
+                        <input type="text" name = "username" value={username} onChange={handleChange} placeholder="username" />
+                        <input type="email" name = "email" value={email} onChange={handleChangeEmail} placeholder="Email" />
+                        <input type="password" name = "password" value={password} onChange={handleChange} placeholder="Password" />
+                        <button onClick={handleSignUp}>Sign Up</button>
                     </form>
                 </div>
                 <div className="form-container sign-in-container">
@@ -121,45 +137,5 @@ export default function LoginPage() {
                 </div>
             </div>
       </Fragment>
-
-
-
-        // <div className="px-3 pb-3 mt-1 bg-light">
-        //             {/* <form name="form" onSubmit={handleSubmit}> */}
-        //             <form name="form">
-        //      <h2 className="py-3">Login</h2>
-        //      <div className="row justify-content-md-center">
-        //         <div className="col-md-6 col-sm-12 mb-4">
-        //             <label>Username</label>
-        //             <input type="text" name="username" value={inputs.username} onChange={handleChange} className={'form-control' + (submitted && !username && !correctCredentials ? ' is-invalid' : '')} />
-        //             {submitted && !username && !correctCredentials &&
-        //                 <div className="invalid-feedback">Username is required</div>
-        //             }
-        //             {/* <input type="text" name="username"/> */}
-        //         </div>
-        //         <div className="col-md-6 col-sm-12 mb-4">
-        //             <label>Password</label>
-        //             <input type="password" name="password" value={password} onChange={handleChange} className={'form-control' + (submitted && !password && !correctCredentials? ' is-invalid' : '')} />
-        //             {submitted && !password && !correctCredentials &&
-        //                 <div className="invalid-feedback">Password is required</div>
-        //             }
-        //         </div>
-        //         {/* <div className="col-md-6 col-sm-12 mb-4">
-        //             <label>Password</label>
-        //             <input type="password" name="password"/>
-        //         </div> */}
-        //         </div>
-        //         <div className="row">
-        //         <div className="col-md-12 col-sm-12 d-flex justify-content-md-end">
-        //             <button className="btn btn-primary" onClick={handleSubmit}>
-        //                 {/* {loggingIn && <span className="spinner-border spinner-border-sm mr-1"></span>} */}
-        //                 Login
-        //             </button>
-        //         </div>
-        //     </div>
-        //     </form>
-        // </div>
     );
 }
-
-// export { LoginPage };

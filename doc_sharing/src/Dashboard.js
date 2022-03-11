@@ -28,6 +28,7 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const [groups, setGroups] = useState([]);
     const [loadId, setLoadId] = useState();
+    const [groupPasscode, setPasscode] = useState();
 
     useEffect(() => {
         const socket_instance = io("http://localhost:3003")
@@ -50,6 +51,18 @@ export default function Dashboard() {
         }
       }, [])
 
+      function addNewGroup(){
+          socket.emit('addNewGroup', groupPasscode, currentUser.user.name);
+          socket.on('added', added=>{
+              console.log(added);
+          });
+      }
+
+      function handleChange(e){
+        setPasscode(e.target.value);
+        console.log(groupPasscode);
+      }
+
   return (
     <>
       <div className="content">
@@ -57,40 +70,6 @@ export default function Dashboard() {
         {groups.map(group=>
                       <Group groupId = {group}></Group>
                   )}
-          {/* <Col>
-            <Card className="card-stats">
-              <CardBody> */}
-                  
-                {/* <Row>
-                  <Col md="4" xs="5">
-                    <div className="icon-big">
-                      <i className="nc-icon nc-circle-10" />
-                      &nbsp;
-                      <i className="nc-icon nc-circle-10" />
-                      <br></br>
-                      <i className="nc-icon nc-circle-10" />
-                      &nbsp;
-                      <i className="nc-icon nc-circle-10" />
-                    </div>
-                    
-                  </Col>
-                  <Col md="8" xs="7">
-                    <div className="numbers">
-                    <CardTitle tag="p">Keystone group</CardTitle>
-                      <p className="card-category">Work on keystone project Winter 22</p>
-                      <p />
-                    </div>
-                  </Col>
-                </Row> */}
-              {/* </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats text-center">
-                  <a type="button" href="http://localhost:3000/">Join</a>
-                </div>
-              </CardFooter>
-            </Card>
-          </Col> */}
           <Col lg="3" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
@@ -104,6 +83,8 @@ export default function Dashboard() {
                     <div className="numbers">
                       <p className="card-category">New Task</p>
                       <CardTitle tag="p">______</CardTitle>
+                      <input type="text" name = "groupPasscode" value={groupPasscode} onChange={handleChange} placeholder="passcode" />
+                      <button onClick={addNewGroup}>Click to add</button>
                       <p />
                     </div>
                   </Col>

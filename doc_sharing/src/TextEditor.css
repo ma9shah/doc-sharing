@@ -4,6 +4,13 @@ body {
 
 .container .ql-editor {
     width: 8in; 
-    height: 10in;
+    height: calc(100vh - 69px);
     margin: 1em;
+}
+
+.ql-container {
+    background-color: white;
+}
+.ql-toolbar {
+    background-color: white;
 }

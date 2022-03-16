@@ -8,6 +8,7 @@
 h1 {
 	font-weight: bold;
 	margin: 0;
+	font-size: 28px;
 }
 
 h2 {
@@ -33,7 +34,7 @@ a {
 	margin: 15px 0;
 }
 
-button {
+.login-btn {
 	border-radius: 20px;
 	border: 1px solid #38a75d;
 	background-color: #38a75d;
@@ -46,11 +47,11 @@ button {
 	transition: transform 80ms ease-in;
 }
 
-button:active {
+.login-btn:active {
 	transform: scale(0.95);
 }
 
-button:focus {
+.login-btn:focus {
 	outline: none;
 }
 
@@ -114,7 +115,7 @@ input {
 	z-index: 2;
 }
 
-.container.right-panel-active .sign-in-container {
+.containerForLogin.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
 
@@ -125,7 +126,7 @@ input {
 	z-index: 1;
 }
 
-.container.right-panel-active .sign-up-container {
+.containerForLogin.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 	opacity: 1;
 	z-index: 5;
@@ -155,7 +156,7 @@ input {
 	z-index: 100;
 }
 
-.container.right-panel-active .overlay-container{
+.containerForLogin.right-panel-active .overlay-container{
 	transform: translateX(-100%);
 }
 
@@ -175,7 +176,7 @@ input {
 	transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
+.containerForLogin.right-panel-active .overlay {
   	transform: translateX(50%);
 }
 
@@ -198,7 +199,7 @@ input {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay-left {
+.containerForLogin.right-panel-active .overlay-left {
 	transform: translateX(0);
 }
 
@@ -207,7 +208,7 @@ input {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay-right {
+.containerForLogin.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }
 
@@ -327,15 +328,12 @@ input {
 }
 
 .login-container {
-	opacity: 1;
-	background: #f8f3fd;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	font-family: 'Oxygen';
 	height: 100vh;
-	margin: -20px 0 50px;
 }
 
 .low-opacity {

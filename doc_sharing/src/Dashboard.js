@@ -23,7 +23,10 @@ import {
 export default function Dashboard() {
     const [socket, setSocket] = useState();
     const [username, setUsername] = useState();
-    const currentUser = useSelector(state => state.currentUser)
+    // const currentUser = useSelector(state => state.currentUser)
+    const currentUser = { user : {
+        name: "sana"
+    }};
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const [groups, setGroups] = useState([]);
@@ -81,9 +84,8 @@ export default function Dashboard() {
                 <td>Otto</td>
                 <td>@mdo</td>
                 </tr> */}
-                {groups!=null && groups.map(group => (
-                    <Group groupId={group}></Group>
-                    
+                {groups!=null && groups.map((group, index) => (
+                    <Group key={index} groupId={group}></Group>
                 ))}
             </tbody>
         </table>

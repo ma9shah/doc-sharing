@@ -60,27 +60,20 @@ export default function LoginPage() {
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log("submit kiya");
         setSubmitted(true);
         socket.emit('verifyUser', username, password);
-        console.log("his")
         socket.on('LoggedIn', (login) =>{
             setCorrectCredentials(login);
             console.log("submitted" + correctCredentials)
             if(login){
                 setLoading(true);
-                console.log(isLoading + " is Loading??");
-                console.log(user);
-                console.log("^ before dispatch");
                 setTimeout(() => {
                     setLoading(false);
-                    console.log(isLoading + " is Loading??");
                     dispatch(allActions.userActions.setUser(user));
-                    navigate("/dashboard");
+                    navigate("/admin");
                 }, 1500);
             }
         });
-        console.log("whastup");
     }
 
     function handleChange(e) {
@@ -95,10 +88,8 @@ export default function LoginPage() {
 
     function handleSignUp(e){
         e.preventDefault();
-        console.log(username, email, password);
         socket.emit('createAccount', username, email, password);
         socket.on('created', (created)=>{
-            console.log("confirmation that ", created);
             if(created){
                 dispatch(allActions.userActions.setUser(user));
                 navigate('/dashboard');
@@ -112,21 +103,21 @@ export default function LoginPage() {
             <h2 className="title">Collab <span className="subtitle">Workspace</span></h2>
             <div id="container" className={`containerForLogin${isContainerActive ? " right-panel-active" : ""}`}>
                 <div className="form-container sign-up-container">
-                    <form>
+                    <form autocomplete="off">
                         <h1>Create Account</h1>
-                        <input type="text" name = "username" value={username} onChange={handleChange} placeholder="username" />
+                        <input autocomplete="off" type="text" name = "username" value={username} onChange={handleChange} placeholder="username" />
                         <input type="email" name = "email" value={email} onChange={handleChangeEmail} placeholder="Email" />
                         <input type="password" name = "password" value={password} onChange={handleChange} placeholder="Password" />
-                        <button onClick={handleSignUp}>Sign Up</button>
+                        <button className="login-btn" onClick={handleSignUp}>Sign Up</button>
                     </form>
                 </div>
                 <div className="form-container sign-in-container">
-                    <form>
+                    <form autocomplete="off">
                         <h1>Sign in</h1>
-                        <input type="text" name= "username" value={username} onChange={handleChange} placeholder="username" />
+                        <input autocomplete="off" type="text" name= "username" value={username} onChange={handleChange} placeholder="username" />
                         <input type="password" name="password" value={password} onChange={handleChange} placeholder="Password" />
                         {/* <a href="#">Forgot your password?</a> */}
-                        <button onClick={handleSubmit}>Sign In</button>
+                        <button className="login-btn" onClick={handleSubmit}>Sign In</button>
                     </form>
                 </div>
                 <div className="overlay-container">
@@ -134,12 +125,12 @@ export default function LoginPage() {
                         <div className="overlay-panel overlay-left">
                             <h1>Welcome Back!</h1>
                             <p className="forP">To keep connected with us please login with your personal info</p>
-                            <button className="ghost" id="signIn" onClick={activateSignIn}>Sign In</button>
+                            <button className="login-btn ghost" id="signIn" onClick={activateSignIn}>Sign In</button>
                         </div>
                         <div className="overlay-panel overlay-right">
                             <h1>Hello, Friend!</h1>
                             <p className="forP">Enter your personal details and start journey with us</p>
-                            <button className="ghost" id="signUp" onClick={activateSignUp}>Sign Up</button>
+                            <button className="login-btn ghost" id="signUp" onClick={activateSignUp}>Sign Up</button>
                         </div>
                     </div>
                 </div>
